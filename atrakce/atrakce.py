@@ -33,7 +33,6 @@ def index():
 @app.route('/attractions/date/', methods=['GET'])
 def get_attractions():
     city = request.args.get('city')
-
     if not city:
         return jsonify({"error": "Missing 'city' parameter. Example: ?city=Praha"}), 400
 
@@ -74,7 +73,7 @@ def get_attractions():
         })
 
     except Exception as e:
-        return jsonify({"error": "Databáze není dostupná", "details": str(e)}), 500
+        return jsonify({"error": "Databaze neni dostupna", "details": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8081)

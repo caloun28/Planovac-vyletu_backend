@@ -10,8 +10,8 @@ if ($method === 'GET' && $uri === '/') {
         "version" => "1.0",
         "description" => "Core API for trip planning, integrating weather and local attractions.",
         "endpoints" => [
-            "GET /" => "Dokumentace Plánovače",
-            "GET /attractions" => "Dokumentace a vysvětlení k lokálním atrakcím (Python API)",
+            "GET /" => "Dokumentace Planovace",
+            "GET /attractions" => "Dokumentace a vysvetleni k lokalnim atrakcim (Python API)",
             "GET /locality/date-range?city={city}" => "Returns offered services, weather, and attractions for the specified city.",
             "POST /plan-trip" => "Creates a trip order (number of people, dates, attractions, etc.)."
         ]
@@ -24,7 +24,7 @@ if ($method === 'GET' && $uri === '/attractions') {
     if ($python_doc) {
         echo $python_doc;
     } else {
-        echo json_encode(["error" => "Python API pro atrakce je momentálně nedostupné."], JSON_UNESCAPED_UNICODE);
+        echo json_encode(["error" => "Python API pro atrakce je momentalne nedostupne."], JSON_UNESCAPED_UNICODE);
     }
     exit;
 }
@@ -38,21 +38,19 @@ if ($method === 'GET' && $uri === '/attractions/date/') {
         exit;
     }
 
-    // Dotaz na interní Python API
     $python_url = "http://127.0.0.1:8081/attractions/date/?city=" . urlencode($city);
     $python_data = @file_get_contents($python_url);
 
     if ($python_data) {
         echo $python_data;
     } else {
-        echo json_encode(["error" => "Python API nedostupné."], JSON_UNESCAPED_UNICODE);
+        echo json_encode(["error" => "Python API nedostupne."], JSON_UNESCAPED_UNICODE);
     }
     exit;
 }
 
 if ($method === 'GET' && $uri === '/locality/date-range') {
     $city = $_GET['city'] ?? 'Praha';
-
 
     $coords = [
         'Praha' => ['lat' => 50.088, 'lon' => 14.4208],
@@ -94,13 +92,13 @@ if ($method === 'GET' && $uri === '/locality/date-range') {
     ];
     $context = stream_context_create($options);
     $hotels_response = @file_get_contents("http://192.168.2.170:5000/search-hotels", false, $context);
-    $hotels = $hotels_response ? json_decode($hotels_response, true) : ["error" => "Hotely nedostupné"];
+    $hotels = $hotels_response ? json_decode($hotels_response, true) : ["error" => "Hotely nedostupne"];
 
     echo json_encode([
         "locality" => $city,
         "services_offered" => [
             "weather_forecast" => "Open-Meteo API",
-	    "hotels" => $hotels,
+            "hotels" => $hotels,
             "local_attractions" => "Internal Python API"
         ],
         "current_weather" => $weather,
